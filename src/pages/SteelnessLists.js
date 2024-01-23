@@ -1,15 +1,24 @@
 import React from 'react'
 import { useGlobalContext } from "../context";
 import lists from '../lists';
+import checkboxData from './checkboxData';
 import { useState } from 'react';
 
 
 
 
-const SteelnessLists = ()=> {
+  const SteelnessLists = ()=> {
     const {closeSubmenu, setShowInput, showInput} = useGlobalContext();
     const [sheets, setSheets] = useState(lists);
-    
+    const [category, setCategory] = useState(checkboxData)
+    const [checkedState, setCheckedState] = useState(new Array(category.length).fill(false));
+
+    const handleOnChange= (position)=> {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    )
+
+    setCheckedState(updatedCheckedState);}
    
     
   function handleChange(e) {
@@ -31,7 +40,20 @@ return(
        <form>
         <button onClick={()=>setShowInput(false)}>Сталь</button>
         <div>
-      <input type="checkbox" id='steel' name="AISI 304" onChange={handleChange}  />
+          <ul>
+            {category.map((category,index) => {
+              return(
+                <li><input type="checkbox" id={`custom-checkbox-${index}`} name={category} 
+                onChange={() => handleOnChange(index)} checked={checkedState[index]} onClick={handleChange}  />
+                <label htmlFor={`custom-checkbox-${index}`}>{category}</label></li>
+              )
+
+            })}
+            </ul>
+             </div>
+      </form>:'Сталь'}</button></li>
+          </ul>
+      {/* <input type="checkbox" id='steel' name="AISI 304" {() => handleOnChange(index)} checked={checkedState[index]}  />
       <label htmlFor='steel'>AISI 304</label>
 
       <input type="checkbox"  id='steel' name="AISI 201" onChange={handleChange}  />
@@ -39,13 +61,12 @@ return(
 
       <input type="checkbox" id='steel' name="12X18H10T" onChange={handleChange}  />
       <label htmlFor='steel'>12X18H10T</label>
-    </div>
-      </form>:'Сталь'}</button></li>
+   
        <li><button type='btn' className='btn'>Толщина</button></li>
        <li><button type='btn' className='btn'>Длина</button></li>
        <li><button type='btn' className='btn'>Ширина</button></li>
        <li><button type='btn' className='btn'>Поверхность</button></li>
-    </ul>
+    </ul> */}
    </div>
    <div className="products-container">
         {sheets.map((product) => {
